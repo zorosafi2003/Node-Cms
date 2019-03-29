@@ -1,9 +1,14 @@
 const path = require('path');
 
 module.exports.init = (app)=>{
-    let routesPath = app.get('root') + '/app/routes';
+    let homeRoutesPath = app.get('root') + '/app/routes/home';
 
-    app.use('/',require(path.join(routesPath,'home')));
-    app.use('/auth',require(path.join(routesPath,'auth')));
+    app.use('/',require(path.join(homeRoutesPath,'index')));
+    app.use('/auth',require(path.join(homeRoutesPath,'auth')));
+
+    let adminRoutesPath = app.get('root') + '/app/routes/admin';
+
+    app.use('/admin/posts',require(path.join(adminRoutesPath,'post')));
+    app.use('/admin',require(path.join(adminRoutesPath,'index')));
 
 }

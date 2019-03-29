@@ -1,7 +1,7 @@
 module.exports.getLogin = (req, res, next) => {
-  res.render("auth/login");
+  res.render("home/login");
 };
 
 module.exports.getRegister = (req, res, next) => {
-  res.render("auth/register");
+  res.render("home/register");
 };

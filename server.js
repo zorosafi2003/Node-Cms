@@ -11,6 +11,8 @@ const HOST_NAME = config.host || 'localhost';
 app.set('root',__dirname);
 app.set('config',config);
 
+require('./config/mongoose').init(app);
+require('./config/models').init(app);
 require('./config/express').init(app);
 require('./config/routes').init(app);
 

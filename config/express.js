@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("express-hbs");
+const bodyParser = require('body-parser')
 
 module.exports.init = app => {
   const rootDir = app.get("root");
@@ -13,6 +14,7 @@ module.exports.init = app => {
   app.set("view engine", "hbs");
   app.set("views", path.join(rootDir, "app", "views"));
 
+  app.use(bodyParser.urlencoded({extended:true}));
   app.use(express.json());
   app.use(express.static(path.join(rootDir, "public")));
 };
