@@ -4,8 +4,9 @@ const hbs = require("express-hbs");
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override');
 const expressUpload = require('express-fileupload');
-var session = require('express-session');
-var flash = require('req-flash');
+const session = require('express-session');
+const flash = require('req-flash');
+const expressValidator = require('express-validator');
 
 module.exports.init = app => {
   const rootDir = app.get("root");
@@ -26,6 +27,7 @@ module.exports.init = app => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(express.static(path.join(rootDir, "public")));
+  app.use(expressValidator());
   app.use(methodOverride('_method'));
   app.use(expressUpload());
   app.use(session({ secret: '123' }));

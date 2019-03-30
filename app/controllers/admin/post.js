@@ -1,30 +1,39 @@
 const mongoose = require('mongoose');
 const Post = mongoose.model('post');
-const uploadHelper= require('../../helpers/upload-helpers');
+const uploadHelper = require('../../helpers/upload-helpers');
 const fs = require('fs');
-
+const { validationResult } = require('express-validator/check')
 module.exports.getPosts = (req, res, next) => {
-    Post.find().sort({createdAt:-1}).exec().then(postArr => {
-        res.render('admin/posts/index', { posts: postArr ,...req.flash() });
+    Post.find().sort({ createdAt: -1 }).exec().then(postArr => {
+        res.render('admin/posts/index', { posts: postArr, ...req.flash() });
     }).catch(err => {
         next(err);
     });
 }
 
 module.exports.getCreatePost = (req, res, next) => {
-    res.render('admin/posts/create')
+    res.render('admin/posts/create',{
+        isEdit: false
+    });
 }
 
 module.exports.CreatePost = (req, res, next) => {
-    if(!uploadHelper.isEmpty(req.files))
-    {
-        let file = req.files.file;
-        let fileName =Date.now()+'-' +file.name;
 
-        file.mv(uploadHelper.uploadDir +fileName,(err)=>{
-            if(err)
-            {next(err);}
-        }) ;
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('admin/posts/create'
+            , { errors: errors.array(), 
+                post: req.body, 
+                isEdit: false });
+    }
+
+    if (!uploadHelper.isEmpty(req.files)) {
+        let file = req.files.file;
+        let fileName = Date.now() + '-' + file.name;
+
+        file.mv(uploadHelper.uploadDir + fileName, (err) => {
+            if (err) { next(err); }
+        });
         req.body.file = fileName;
     }
 
@@ -34,7 +43,7 @@ module.exports.CreatePost = (req, res, next) => {
     } else {
         req.body.allowComments = false;
     }
-   
+
     Post.create(req.body).then(post => {
         res.redirect('/admin/posts');
     }).catch(err => {
@@ -45,13 +54,21 @@ module.exports.CreatePost = (req, res, next) => {
 module.exports.getEditPost = (req, res, next) => {
     let postId = req.params.id;
     Post.findById(postId).then(post => {
-        res.render('admin/posts/edit', { post });
+        res.render('admin/posts/create', { post ,isEdit:true});
     }).catch(err => {
         next(err);
     });
 }
 
 module.exports.editPost = (req, res, next) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('admin/posts/create'
+            , { errors: errors.array(), 
+                post: req.body, 
+                isEdit: true });
+    }
+
     let postId = req.params.id;
     if (req.body.allowComments) {
         req.body.allowComments = true;
@@ -64,7 +81,7 @@ module.exports.editPost = (req, res, next) => {
         post.allowComments = req.body.allowComments;
         post.body = req.body.body;
         return post.save()
-    }).then(()=>{
+    }).then(() => {
         res.redirect('/admin/posts')
     }).catch(err => {
         next(err);
@@ -73,10 +90,10 @@ module.exports.editPost = (req, res, next) => {
 
 module.exports.deletePost = (req, res, next) => {
     let postId = req.params.id;
-    Post.findById(postId).then((post)=>{
-        fs.unlink(uploadHelper+post.file,(err)=>{
+    Post.findById(postId).then((post) => {
+        fs.unlink(uploadHelper + post.file, (err) => {
             post.remove();
-            req.flash('successMessage','Post was Deleted successfully');
+            req.flash('successMessage', 'Post was Deleted successfully');
             res.redirect('/admin/posts')
         })
     }).catch(err => {
