@@ -1,8 +1,14 @@
 <h1>All Posts</h1>
+{{#if successMessage}}
+<div class="alert alert-success" role="alert">
+    <strong>{{successMessage}}</strong>
+</div>
+{{/if}}
 <table class="table table-striped table-inverse table-bordered">
     <thead class="thead-inverse">
         <tr>
             <th>Id</th>
+            <th>File</th>
             <th>Title</th>
             <th>Status</th>
             <th>Allow Comments</th>
@@ -14,14 +20,17 @@
         {{#each posts}}
         <tr>
             <td scope="row">{{this._id}}</td>
+            <td> {{#if this.file}}<img style="height:50px;width:50px;" src="/uploads/{{this.file}}">{{/if}}</td>
             <td>{{this.title}}</td>
             <td>{{this.status}}</td>
             <td>{{this.allowComments}}</td>
-            <td class="text-center"><a href="/admin/posts/edit/{{this._id}}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            <td class="text-center"><a href="/admin/posts/edit/{{this._id}}" class="btn btn-primary"><i
+                        class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
             </td>
             <td class="text-center">
                 <form action="/admin/posts/delete/{{this._id}}?_method=DELETE" method="post">
-               <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o" aria-hidden="true"></i> </button>  
+                    <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </button>
                 </form>
             </td>
         </tr>

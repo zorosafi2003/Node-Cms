@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 
+#upload|_files
+/public/uploads/*
+
 # testing
 /coverage
 

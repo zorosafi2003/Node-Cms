@@ -14,6 +14,13 @@ const postSchema = new mongoose.Schema({
     },
     body:{
         type:String
+    },
+    file:{
+        type:String
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now
     }
 });
 
