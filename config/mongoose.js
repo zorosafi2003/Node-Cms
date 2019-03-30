@@ -9,7 +9,8 @@ module.exports.init = (app) => {
         dbName: config.mongodb.dbName,
         useNewUrlParser: true
     }).then(() => {
-        console.log('Success connect to db')
+        console.log('Success connect to db');
+        require('../app/seeders').init(app);
     }).catch(err => {
         console.log('Error in connect to db');
     });
