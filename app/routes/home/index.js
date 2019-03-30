@@ -10,5 +10,6 @@ router.all('/*',(req,res,next)=>{
 
 router.get('/',homeCtrl.getHome);
 router.get('/about',homeCtrl.getAbout);
+router.get('/post/:id',homeCtrl.getPostById);
 
 module.exports = router;

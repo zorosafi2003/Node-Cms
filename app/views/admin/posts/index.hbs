@@ -12,6 +12,7 @@
             <th>Title</th>
             <th>Status</th>
             <th>Allow Comments</th>
+             <th>Date</th>
             <th></th>
             <th></th>
         </tr>
@@ -24,6 +25,7 @@
             <td>{{this.title}}</td>
             <td>{{this.status}}</td>
             <td>{{this.allowComments}}</td>
+            <td>{{#formatDate this.createdAt 'YYYY-DD-MM h:hh A'}}{{/formatDate}}</td>
             <td class="text-center"><a href="/admin/posts/edit/{{this._id}}" class="btn btn-primary"><i
                         class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
             </td>
