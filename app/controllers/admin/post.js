@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const Post = mongoose.model('post');
+const Category = mongoose.model('category');
+
 const uploadHelper = require('../../helpers/upload-helpers');
 const fs = require('fs');
-const { validationResult } = require('express-validator/check')
+const { validationResult } = require('express-validator/check');
+
 module.exports.getPosts = (req, res, next) => {
     Post.find().sort({ createdAt: -1 }).exec().then(postArr => {
         res.render('admin/posts/index', { posts: postArr, ...req.flash() });
@@ -12,8 +15,11 @@ module.exports.getPosts = (req, res, next) => {
 }
 
 module.exports.getCreatePost = (req, res, next) => {
-    res.render('admin/posts/create',{
-        isEdit: false
+    Category.find().then(categoryArr => {
+        res.render('admin/posts/create', {
+            isEdit: false,
+            categories: categoryArr
+        });
     });
 }
 
@@ -22,9 +28,11 @@ module.exports.CreatePost = (req, res, next) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.render('admin/posts/create'
-            , { errors: errors.array(), 
-                post: req.body, 
-                isEdit: false });
+            , {
+                errors: errors.array(),
+                post: req.body,
+                isEdit: false
+            });
     }
 
     if (!uploadHelper.isEmpty(req.files)) {
@@ -54,7 +62,9 @@ module.exports.CreatePost = (req, res, next) => {
 module.exports.getEditPost = (req, res, next) => {
     let postId = req.params.id;
     Post.findById(postId).then(post => {
-        res.render('admin/posts/create', { post ,isEdit:true});
+        Category.find().then(categoryArr => {
+            res.render('admin/posts/create', { post, isEdit: true, categories: categoryArr });
+        });
     }).catch(err => {
         next(err);
     });
@@ -64,9 +74,11 @@ module.exports.editPost = (req, res, next) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.render('admin/posts/create'
-            , { errors: errors.array(), 
-                post: req.body, 
-                isEdit: true });
+            , {
+                errors: errors.array(),
+                post: req.body,
+                isEdit: true
+            });
     }
 
     let postId = req.params.id;
@@ -80,6 +92,7 @@ module.exports.editPost = (req, res, next) => {
         post.status = req.body.status;
         post.allowComments = req.body.allowComments;
         post.body = req.body.body;
+        post.category = req.body.category;
         return post.save()
     }).then(() => {
         res.redirect('/admin/posts')

@@ -1,0 +1,10 @@
+<div class="row">
+    <form action="/admin/categories/edit/{{category._id}}?_method=PUT" method="post" class="col-6 offset-3">
+        <div class="input-group">
+            <input type="text" class="form-control" name="name" value="{{category.name}}">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit" aria-label="">Update Category</button>
+            </span>
+        </div>
+    </form>
+</div>

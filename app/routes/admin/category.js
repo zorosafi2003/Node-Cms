@@ -12,5 +12,9 @@ router.all('/*',(req,res,next)=>{
 router.get('',categoryCtrl.getCategories);
 router.post('/create',categoryValidator.validateCreateCategory(),categoryCtrl.createCategory);
 
+router.get('/edit/:id',categoryCtrl.getEditCategory);
+router.put('/edit/:id',categoryValidator.validateCreateCategory(),categoryCtrl.editCategory);
+
+router.delete('/delete/:id',categoryCtrl.deleteCategory);
 
 module.exports = router;

@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const Post = mongoose.model('post');
+const Category = mongoose.model('category');
 
 module.exports.getHome = (req, res, next) => {
   Post.find().sort({ createdAt: -1 }).exec().then(postArr => {
-    res.render("home/index", { posts: postArr });
+    Category.find().then(categoryArr=>{
+      res.render("home/index", { posts: postArr , categories :categoryArr});
+    })
   }).catch(err => {
     next(err);
   })
