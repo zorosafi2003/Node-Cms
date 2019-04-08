@@ -4,25 +4,27 @@ const app = express();
 const config = require('./config');
 
 // server params
-const PORT =config.port || '3000';
+const PORT = config.port || '3000';
 const HOST_NAME = config.host || 'localhost';
 
 //global params
-app.set('root',__dirname);
-app.set('config',config);
+app.set('root', __dirname);
+app.set('config', config);
 
 require('./config/mongoose').init(app);
 require('./config/models').init(app);
+require('./config/passport').init(app);
 require('./config/express').init(app);
 require('./config/routes').init(app);
 
-app.use((req,res,next)=>{
-    res.status(404).send('page not found');
+app.use((req, res, next) => {
+  res.status(404).send('page not found');
 })
+
 
 if (!module.parent) {
   let server = http.createServer(app);
-  server.listen(PORT, HOST_NAME,() => {
+  server.listen(PORT, HOST_NAME, () => {
     console.log(`connecting to server ${HOST_NAME} in port ${PORT}`);
   });
 }

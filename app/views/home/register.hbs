@@ -1,32 +1,37 @@
+{{#if errors}}
+<div class="alert alert-danger text-center mt-4" role="alert">
+  {{#each errors}}<p class="mb-0"> <strong>{{this.msg}}</strong> </p>{{/each}}
+</div>
+{{/if}}
 <div class="card card-register mx-auto mt-5">
     <div class="card-header">Register an Account</div>
     <div class="card-body">
-        <form action="/register" method="post">
+        <form action="/auth/register" method="post">
             <div class="form-group">
                 <div class="form-row">
                     <div class="col-md-6">
                         <label for="exampleInputName">First name</label>
-                        <input name="firstName" class="form-control" id="exampleInputName" type="text" aria-describedby="nameHelp" placeholder="Enter first name">
+                        <input name="firstName" class="form-control" type="text"  placeholder="Enter first name" value="{{user.firstName}}">
                     </div>
                     <div class="col-md-6">
                         <label for="exampleInputLastName">Last name</label>
-                        <input name="lastName" class="form-control" id="exampleInputLastName" type="text" aria-describedby="nameHelp" placeholder="Enter last name">
+                        <input name="lastName" class="form-control"  type="text" placeholder="Enter last name" value="{{user.lastName}}">
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input name="email" class="form-control" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email">
+                <input name="email" class="form-control"  type="email" placeholder="Enter email" value="{{user.email}}">
             </div>
             <div class="form-group">
                 <div class="form-row">
                     <div class="col-md-6">
                         <label for="exampleInputPassword1">Password</label>
-                        <input name="password" class="form-control" id="exampleInputPassword1" type="password" placeholder="Password">
+                        <input name="password" class="form-control" type="password" placeholder="Password" value="{{user.password}}">
                     </div>
                     <div class="col-md-6">
                         <label for="exampleConfirmPassword">Confirm password</label>
-                        <input name="passwordConfirm" class="form-control" id="exampleConfirmPassword" type="password" placeholder="Confirm password">
+                        <input name="passwordConfirm" class="form-control" type="password" placeholder="Confirm password">
                     </div>
                 </div>
             </div>
@@ -34,7 +39,6 @@
         </form>
         <div class="text-center">
             <a class="d-block small mt-3" href="/login">Login Page</a>
-            <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
             <a class="d-block small" href="/">Home Page?</a>
         </div>
     </div>

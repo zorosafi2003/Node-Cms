@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
+const {userAuthenticated} = require('../../middlewares/auth-middleware');
 
 const postCtrl = require('../../controllers/admin/post')
 const postValidator = require('../../validators/admin/post-validator');
 
-router.all('/*',(req,res,next)=>{
+router.all('/*',userAuthenticated,(req,res,next)=>{
     req.app.locals.layout = 'admin';
     next();
 });

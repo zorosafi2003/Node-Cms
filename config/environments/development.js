@@ -4,5 +4,8 @@ module.exports = {
     mongodb:{
         url:'mongodb://localhost:27017',
         dbName:'myproject'
+    },
+    session:{
+        type:'mongo'
     }
 }
