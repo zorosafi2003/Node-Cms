@@ -25,7 +25,15 @@ const postSchema = new mongoose.Schema({
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'category'
-    }
+    },
+    comments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'comment'
+        }
+    ]
 });
+
+
 
 module.exports = mongoose.model('post',postSchema);

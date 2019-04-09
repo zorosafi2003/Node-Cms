@@ -10,7 +10,7 @@ module.exports.init = (app) => {
         useNewUrlParser: true
     }).then(() => {
         console.log('Success connect to db');
-        require('../app/seeders').init(app);
+       // require('../app/seeders').init(app);
     }).catch(err => {
         console.log('Error in connect to db');
     });

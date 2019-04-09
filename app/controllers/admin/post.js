@@ -103,11 +103,17 @@ module.exports.editPost = (req, res, next) => {
 
 module.exports.deletePost = (req, res, next) => {
     let postId = req.params.id;
-    Post.findById(postId).then((post) => {
+    Post.findById(postId).populate('comments').exec().then((post) => {
         fs.unlink(uploadHelper + post.file, (err) => {
-            post.remove();
-            req.flash('successMessage', 'Post was Deleted successfully');
-            res.redirect('/admin/posts')
+            console.log( post.comments);
+            post.comments.forEach(comment => {
+                comment.remove();
+            });
+            post.remove().then(()=>{
+                req.flash('successMessage', 'Post was Deleted successfully');
+                res.redirect('/admin/posts');
+            });
+          
         })
     }).catch(err => {
         next(err);
