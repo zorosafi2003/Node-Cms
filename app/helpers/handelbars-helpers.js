@@ -7,4 +7,8 @@ module.exports.init = (hbs) => {
     hbs.registerHelper('formatDate', function (text, format) {
         return moment(text).format(format);
     });
+
+    hbs.registerHelper('paginate', function (options, currentPage) {
+        console.log(options,currentPage);
+    });
 }

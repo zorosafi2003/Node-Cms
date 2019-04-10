@@ -18,7 +18,7 @@ module.exports.getAbout = (req, res, next) => {
 
 module.exports.getPostById = (req, res, next) => {
   let postId = req.params.id;
-  Post.findById(postId).then(post=>{
+  Post.findById(postId).populate({path:'comments',populate:{path:'user'}}).exec().then(post=>{
     res.render("home/post",{post});
   })
 };
